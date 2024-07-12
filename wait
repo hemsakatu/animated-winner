@@ -1,0 +1,32 @@
+apt update
+apt install screen -y
+apt install sudo -y
+sudo adduser aank --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password
+echo "aank:123" | sudo chpasswd
+sudo usermod -aG sudo,adm aank
+wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
+tar xvf ngrok-v3-stable-linux-amd64.tgz
+./ngrok config add-authtoken 2gFXZsDjXF9tMy9kKkqTUnKOEEg_52LJhDeaQ2seJMqHXAyNc
+nohup ./ngrok tcp --region ap 3389 &>/dev/null &
+export DEBIAN_FRONTEND=noninteractive
+ln -fs /usr/share/zoneinfo/Africa/Johannesburg /etc/localtime
+dpkg-reconfigure --frontend noninteractive tzdata
+echo "===================================="
+echo "Install XFCE"
+echo "===================================="
+sudo DEBIAN_FRONTEND=noninteractive apt install -y xfce4 xfce4-goodies
+
+
+sudo add-apt-repository ppa:mozillateam/ppa -y
+sudo apt update
+sudo apt install firefox-esr -y
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y xrdp
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y xfce4-terminal
+echo "=================70%"
+echo xfce4-session >~/.xsession
+echo "=====================90%"
+sudo service xrdp start
+
+echo RDP Address:
+curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*public_url":"tcp:..([^"]*).*/\1/p'
+while :; do echo $RANDOM | md5sum | head -c 20; echo; sleep 1m; done
